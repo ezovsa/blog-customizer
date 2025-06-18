@@ -43,7 +43,6 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 
 	const handleChange =
 		(fieldName: keyof ArticleStateType) => (value: OptionType) => {
-			console.log(value, fieldName);
 			setArticleState((prev: ArticleStateType) => ({
 				...prev,
 				[fieldName]: value,
