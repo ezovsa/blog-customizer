@@ -14,7 +14,7 @@ import {
 	ArticleStateType,
 	OptionType,
 } from 'src/constants/articleProps';
-import { useOutsideClick } from 'src/hooks/useOutsideClick';
+import { useClose } from 'src/hooks/useClose';
 
 import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
@@ -32,13 +32,18 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 	articleState,
 	setArticleState,
 }) => {
-	const [opened, setOpened] = useState<boolean>(false);
+	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 	const sidebarRef = useRef<HTMLDivElement>(null);
+	const formRef = useRef<HTMLElement>(null);
 
-	useOutsideClick(sidebarRef, () => setOpened(false), opened);
+	useClose({
+		isOpen: isMenuOpen,
+		onClose: () => setIsMenuOpen(false),
+		rootRef: formRef,
+	});
 
 	const handleToggle = () => {
-		setOpened((prev) => !prev);
+		setIsMenuOpen((prev) => !prev);
 	};
 
 	const handleChange =
@@ -49,13 +54,20 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 			}));
 		};
 
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		handleApply();
+	};
+
 	return (
 		<>
-			<ArrowButton isOpen={opened} onClick={handleToggle} />
+			<ArrowButton isOpen={isMenuOpen} onClick={handleToggle} />
 			<aside
-				className={clsx(styles.container, { [styles.container_open]: opened })}
+				className={clsx(styles.container, {
+					[styles.container_open]: isMenuOpen,
+				})}
 				ref={sidebarRef}>
-				<form className={styles.form} onClick={(e) => e.preventDefault()}>
+				<form className={styles.form} onSubmit={handleSubmit}>
 					<Text size={31} weight={800} uppercase as='h3' align='center'>
 						Задайте параметры
 					</Text>
@@ -99,12 +111,7 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 							type='clear'
 							onClick={handleReset}
 						/>
-						<Button
-							title='Применить'
-							htmlType='submit'
-							type='apply'
-							onClick={handleApply}
-						/>
+						<Button title='Применить' htmlType='submit' type='apply' />
 					</div>
 				</form>
 			</aside>
