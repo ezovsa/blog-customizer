@@ -34,12 +34,11 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 }) => {
 	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 	const sidebarRef = useRef<HTMLDivElement>(null);
-	const formRef = useRef<HTMLElement>(null);
 
 	useClose({
 		isOpen: isMenuOpen,
 		onClose: () => setIsMenuOpen(false),
-		rootRef: formRef,
+		rootRef: sidebarRef,
 	});
 
 	const handleToggle = () => {
