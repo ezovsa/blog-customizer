@@ -33,7 +33,8 @@ export const Option = (props: OptionProps) => {
 			data-checked={isChecked}
 			data-testid={inputId}
 			tabIndex={0}
-			ref={optionRef}>
+			ref={optionRef}
+			onClick={handleChange}>
 			<input
 				className={styles.input}
 				type='radio'
